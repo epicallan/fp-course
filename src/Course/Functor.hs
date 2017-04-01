@@ -59,7 +59,7 @@ instance Functor List where
     -> List a
     -> List b
   (<$>) f Nil = Nil
-  (<$>) f (x : xs) = f x : (f <$> xs)
+  (<$>) f (x :. xs) = f x :. (f <$> xs)
 
 -- | Maps a function on the Optional functor.
 --
@@ -83,10 +83,9 @@ instance Functor Optional where
 instance Functor ((->) t) where
   (<$>) ::
     (a -> b)
-    -> ((->) t a)
-    -> ((->) t b)
-  (<$>) =
-    error "todo: Course.Functor (<$>)#((->) t)"
+    -> (->) t a
+    -> (->) t b
+  (<$>) = (.)
 
 -- | Anonymous map. Maps a constant value on a functor.
 --
@@ -101,8 +100,8 @@ instance Functor ((->) t) where
   a
   -> f b
   -> f a
-(<$) =
-  error "todo: Course.Functor#(<$)"
+(<$)  = (<$>) . const
+--
 
 -- | Anonymous map producing unit value.
 --
@@ -121,8 +120,13 @@ void ::
   Functor f =>
   f a
   -> f ()
-void =
-  error "todo: Course.Functor#void"
+void  x = () <$ x
+
+
+
+
+
+
 
 -----------------------
 -- SUPPORT LIBRARIES --
